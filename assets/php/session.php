@@ -31,6 +31,6 @@
     if($verified == 0){
         $verified = "Not Verified!";
     }else{
-        $verified = "Verifies!";
+        $verified = "Verified!";
     }
 ?>

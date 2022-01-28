@@ -27,6 +27,7 @@
 
                             <!-- Profile Tab Content START-->
                             <div class="tab-pane container active" id="profile">
+                                <div id="verifyEmailAlert"></div>
                                 <div class="card-deck">
                                     <div class="card border-primary">
                                         <div class="card-header bg-primary text-light text-center lead">
@@ -208,6 +209,23 @@
                     });
                 }
                 
+            });
+
+            //Verify Emil Ajax Request
+            $("#verify-email").click(function(e){
+                e.preventDefault();
+                $(this).text('Please Wait...');
+
+                $.ajax({
+                    url: 'assets/php/process.php',
+                    method:'post',
+                    data:{action: 'verify_email'},
+                    success: function(response){
+                        $("#verifyEmailAlert").html(response);
+                        $("#verify-email").text('Verify Now');
+                    }
+                })
+
             });
         });
     </script>

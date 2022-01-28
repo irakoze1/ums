@@ -135,5 +135,13 @@
             $stmt->execute(['pass'=>$pass, 'id'=>$id]);
             return true; 
         }
+
+        //Veriy Email of an User
+        public function verify_email($email){
+            $sql = "UPDATE users SET verified = 1 WHERE email = :email AND deleted != 0";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['email'=>$email]);
+            return true; 
+        }
     }
 ?>

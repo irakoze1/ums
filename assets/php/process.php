@@ -2,6 +2,21 @@
 
     require_once 'session.php';
 
+    //Import PHPMailer classes into the global namespace
+    //These must be at the top of your script, not inside a function
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+
+    //Load Composer's autoloader
+    require 'vendor/autoload.php';
+    require 'vendor/phpmailer/phpmailer/src/Exception.php';
+    require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+    //Create an instance; passing `true` enables exceptions
+    $mail = new PHPMailer(true);
+
     //Handle Add New Note Ajax 
     if(isset($_POST['action']) && $_POST['action'] == 'add_note'){
         $title = $cuser->test_input(($_POST['title']));
@@ -129,6 +144,36 @@
             }else{
                 echo $cuser->showMessage('danger','Current Password is Wrong!');
             }
+        }
+    }
+
+    //Handle Verify E-Mail Ajax Request
+    if(isset($_POST['action']) && $_POST['action'] == 'verify_email'){
+        try{
+            //Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = Database::USERNAME;
+            $mail->Password = Database::PASSWORD;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+
+            $mail->SetFrom(Database::USERNAME,'Irakoze Tititof');
+            $mail->AddAddress($cemail);
+
+            $mail->IsHTML(true);
+            $mail->Subject = 'E-mail Verification';
+            $mail->Body = '<h3>Click the below link to verify your E-Mail.<br>
+                <a href="http://localhost:8888/user-system/verify-email.php?email='.$cemail.'">http://localhost:8888/user-system/verify-email.php?email='.$cemail.'</a>
+                <br>Irakoze<br>Tititof</h3>';
+
+                $mail->Send();
+                echo $cuser->showMessage('success', 'Verification link sent to your E-Mail. Please Check Your mail!');
+        }
+        catch(Exception $e){
+            echo $cuser->showMessage('danger','Something went wrong please try again later!');
         }
     }
 
