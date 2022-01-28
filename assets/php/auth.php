@@ -143,5 +143,14 @@
             $stmt->execute(['email'=>$email]);
             return true; 
         }
+
+
+        //Send Feedback to Admin
+        public function send_feedback($sub,$feed,$uid){
+            $sql = "INSERT INTO feedback(uid, subject, feedback) VALUES (:uid, :sub, :feed)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['uid'=>$uid, 'sub'=>$sub, 'feed'=>$feed]);
+            return true;
+        }
     }
 ?>

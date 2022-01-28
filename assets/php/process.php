@@ -177,4 +177,12 @@
         }
     }
 
+    //Handle Send Feedback to Admin Ajax Request
+    if(isset($_POST['action']) && $_POST['action'] == 'feedback'){
+        $subject = $cuser->test_input($_POST['subject']);
+        $feedback = $cuser->test_input($_POST['feedback']);
+
+        $cuser->send_feedback($subject, $feedback, $cid);
+    }
+
 ?>
