@@ -37,5 +37,49 @@ class Database{
                 <strong class="text-center">'.$message.'</strong>
             </div>';
         }
+
+        //Display Time in ago
+        public function timeInAgo($timestamp){
+            
+            date_default_timezone_set('Africa/Bujumbura');
+
+            $timestamp = strtotime($timestamp) ? strtotime($timestamp) : $timestamp;
+
+            $time = time() - $timestamp;
+
+            switch($time){
+                //Seconds
+                case $time <= 60:
+                    return 'Just Now!';
+                    break;
+                //Minutes
+                case $time >= 60 && $time < 3600:
+                    return (round($time/60) == 1) ? 'A Minute ago' : round($time/60).' Minutes ago';
+                    break;
+                //Hours
+                case $time >= 3600 && $time < 86400:
+                    return (round($time/3600) == 1)? 'A Hour ago' : round($time/3600).' Hours ago';
+                    break;
+                //Days
+                case $time >= 86400 && $time < 604800:
+                    return (round($time/86400) == 1)? 'A Day ago' : round($time/86400).' Days ago';
+                    break;
+                //Weeks
+                case $time >= 604800 && $time < 2600640:
+                    return (round($time/604800) == 1)? 'a Week ago' : round($time/604800).' Weeks ago';
+                    break;
+                //Months
+                case $time >= 2600640 && $time < 31207680:
+                    return (round($time/2600640) == 1)? 'A Month ago' : round($time/2600640).' Months ago';
+                    break;
+                //Years
+                case $time >= 31207680:
+                    return (round($time/31207680) == 1)? 'a Year ago' : round($time/31207680).' Years ago';
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 ?>

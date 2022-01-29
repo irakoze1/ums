@@ -161,5 +161,24 @@
             $stmt->execute(['uid'=>$uid, 'type'=>$type, 'message'=>$message]);
             return true;
         }
+
+        //fetch Notification
+        public function fetchNotification($uid){
+            $sql = "SELECT * FROM notification WHERE uid = :uid AND type= 'user'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['uid'=>$uid]);
+
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+
+        //Remove Notification
+        public function removeNotification($id){
+            $sql = "DELETE FROM notification WHERE id = :id AND type = 'user'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id'=>$id]);
+            return true;
+        }
+
     }
 ?>

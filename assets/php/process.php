@@ -190,4 +190,47 @@
         $cuser->notification($cid, 'admin','Feedback Written');
     }
 
+    //Handle Fetch Notification
+
+    if(isset($_POST['action']) && $_POST['action'] == 'fetchNotification'){
+        $notification = $cuser->fetchNotification($cid);
+        $output = '';
+
+        if($notification){
+            foreach($notification as $row){
+                $output .= '
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" id="'.$row['id'].'" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="alert-heading">New Notification</h4>
+                    <p class="mb-0 lead">'.$row['message'].'</p>
+                    <hr class="my-2">
+                    <p class="mb-0 float-left">Reply of feedback from admin</p>
+                    <p class="mb-0 float-right">'.$cuser->timeInAgo($row['created_at']).'</p>
+                    <div class="clearfix"></div>
+                </div>
+                ';
+            }
+            echo $output;
+        }else{
+            echo '<h3 class="text-center text-secondary mt-5">No Any new Notification</h3>';
+        }
+    }
+
+    //Check Notification
+    if(isset($_POST['action']) && $_POST['action'] == 'checkNotification'){
+        if($cuser->fetchNotification($cid)){
+            echo '<i class="fas fa-circle fa-sm text-danger"></i>';
+        }else{
+            echo '';
+        }
+    }
+
+    //Remove Notification
+    if(isset($_POST['notification_id'])){
+        $id = $_POST['notification_id'];
+        $cuser->removeNotification($id);
+    }
+
 ?>
