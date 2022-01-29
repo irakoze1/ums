@@ -23,6 +23,7 @@
         $note = $cuser->test_input(($_POST['note']));
 
         $cuser->add_new_note($cid,$title,$note);
+        $cuser->notification($cid, 'admin','Note Added');
     }
 
     //Handle Display All Notes of an User
@@ -83,6 +84,7 @@
         $note = $cuser->test_input($_POST['note']);
 
         $cuser->update_note($id,$title,$note);
+        $cuser->notification($cid, 'admin','Note Updated');
     }
 
     //Handle Delete note of an user Ajax Request
@@ -90,8 +92,8 @@
     if(isset($_POST['del_id'])){
         $id = $_POST['del_id'];
 
-        $row = $cuser->delete_note($id);
-        echo json_encode($row);
+        $cuser->delete_note($id);
+        $cuser->notification($cid, 'admin','Note Deleted');
     }
 
     //Hande Display a Note on an User Ajax Request
@@ -125,6 +127,7 @@
             $newImage = $oldImage;
         }
         $cuser->update_profile($name, $gender, $dob, $phone, $newImage, $cid);
+        $cuser->notification($cid, 'admin','Profil Updated');
     }
 
     //Handle Change Password Ajax Request
@@ -141,6 +144,7 @@
             if(password_verify($currentPass, $cpass)){
                 $cuser->change_password($hnewpass,$cid);
                 echo $cuser->showMessage('success','Password Changed Successfully!');
+                $cuser->notification($cid, 'admin','Password changed');
             }else{
                 echo $cuser->showMessage('danger','Current Password is Wrong!');
             }
@@ -183,6 +187,7 @@
         $feedback = $cuser->test_input($_POST['feedback']);
 
         $cuser->send_feedback($subject, $feedback, $cid);
+        $cuser->notification($cid, 'admin','Feedback Written');
     }
 
 ?>

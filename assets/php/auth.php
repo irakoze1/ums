@@ -152,5 +152,14 @@
             $stmt->execute(['uid'=>$uid, 'sub'=>$sub, 'feed'=>$feed]);
             return true;
         }
+
+
+        //Insert Notification
+        public function notification($uid,$type,$message){
+            $sql = "INSERT INTO notification(uid, type, message) VALUES (:uid, :type, :message)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['uid'=>$uid, 'type'=>$type, 'message'=>$message]);
+            return true;
+        }
     }
 ?>
