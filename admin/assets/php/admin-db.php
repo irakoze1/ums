@@ -66,6 +66,16 @@
             return $count;
         }
         
+        //Fetch All Registeredd Users
+        public function FetchAllUsers($val){
+            $sql = "SELECT * FROM users WHERE deleted != $val";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }
+        
     }
 
 ?>
