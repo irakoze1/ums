@@ -76,6 +76,26 @@
             return $result;
         }
         
+        //Fetch User Details by ID
+        public function fetchUserDetailsByID($id){
+            $sql = "SELECT * FROM users WHERE id = :id AND deleted != 0";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id'=>$id]);
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+
+        //Delete An USER
+        public function userAction($id, $val){
+            $sql = "UPDATE users SET deleted = $val WHERE id= :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id'=>$id]);
+
+            return true;
+        }
+
+
     }
 
 ?>

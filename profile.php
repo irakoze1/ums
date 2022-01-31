@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                     <div class="card border-primary align-self-center">
-                                        <?php if(!$cphoto): ?>xzzzzzz
+                                        <?php if(!$cphoto): ?>
                                             <img src="assets/img/avatar.png" class="img-thumbnail img-fluid" width="408px" alt="">
                                         <?php else: ?>
                                             <img src="<?= 'assets/php/'.$cphoto; ?>" class="img-thumbnail img-fluid" width="408px" alt="">
