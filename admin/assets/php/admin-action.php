@@ -262,5 +262,49 @@
         $admin->feedbackReplied($fid);
     }
 
+    //Handle Fetch Notification Ajax Request
+    if(isset($_POST['action']) && $_POST['action'] == 'fetchNotification'){
+        $notification = $admin->fetchNotification();
+        $output = '';
+
+        if($notification){
+            foreach($notification as $row){
+                $output .= '
+                <div class="alert alert-dark" role="alert">
+                    <button type="button" id="'.$row['id'].'" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="alert-heading">New Notification</h4>
+                    <p class="mb-0 lead">'.$row['message'].' by '.$row['name'].'</p>
+                    <hr class="my-2">
+                    <p class="mb-0 float-left"><b>User E-Mail :</b> '.$row['email'].'</p>
+                    <p class="mb-0 float-right">'.$admin->timeInAgo($row['created_at']).'</p>
+                    <div class="clearfix"></div>
+                </div>
+                ';
+            }
+            echo $output;
+        }else{
+            echo '<h3 class="text-center text-secondary mt-5">No Any new Notification</h3>';
+        }
+    }
+
+    //Handle Check Notification Ajax Request
+    if (isset($_POST['action']) && $_POST['action'] == 'checkNotification'){
+        if($admin->fetchNotification()){
+            echo '<i class="fas fa-circle text-danger fa-sm"></i>';
+        }else{
+            echo '';
+        }
+
+    }
+
+    //Handle Remove Notification Ajax Request
+    if (isset($_POST['notification_id'])){
+        $id = $_POST['notification_id'];
+
+        $admin->removeNotification($id);
+
+    }
     
 ?>

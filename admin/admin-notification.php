@@ -48,14 +48,14 @@
                 notification_id = $(this).attr('id');
 
                 $.ajax({
-                            url:'assets/php/admin-action.php',
-                            method: 'post',
-                            data:{notification_id :notification_id},
-                            success:function(response){
-                                checkNotification();
-                                fetchNotification();
-                            }
-                        });
+                    url:'assets/php/admin-action.php',
+                    method: 'post',
+                    data:{notification_id :notification_id},
+                    success:function(response){
+                        checkNotification();
+                        fetchNotification();
+                    }
+                });
             });
 
 

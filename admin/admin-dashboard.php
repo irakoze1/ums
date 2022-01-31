@@ -113,6 +113,20 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
+        
+        //Check Notification
+        checkNotification();
+            function checkNotification(){
+                $.ajax({
+                    url:'assets/php/admin-action.php',
+                        method: 'post',
+                        data:{action: 'checkNotification'},
+                        success:function(response){
+                            $("#checkNotification").html(response);
+                        }
+                });
+            }
+        
         google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(pieChart);
         function pieChart(){

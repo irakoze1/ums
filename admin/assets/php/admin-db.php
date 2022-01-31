@@ -141,6 +141,25 @@
 
             return true;
         }
+        
+        //Fetch Notification
+        public function fetchNotification(){
+            $sql = "SELECT notification.id, notification.message, notification.created_at, users.name, users.email FROM notification INNER JOIN users ON notification.uid = users.id WHERE type='admin' ORDER BY notification.id DESC LIMIT 5";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }
+        
+        //Remove An Note
+        public function removeNotification($id){
+            $sql = "DELETE FROM notification WHERE id= :id AND type = 'admin'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id'=>$id]);
+
+            return true;
+        }
     }
 
 ?>
