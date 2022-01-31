@@ -130,4 +130,12 @@
             echo $user->showMessage('info','This e-mail is not registered!');
         }
     }
+
+    //Checking User is Loggend In or Not
+    if(isset($_POST['action']) && $_POST['action'] == 'checkUser'){
+        if(!$user->currentUser($_SESSION['user'])){
+            echo 'Bye!!';
+            unset($_SESSION['user']);
+        }
+    }
 ?>

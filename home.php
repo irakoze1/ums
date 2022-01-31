@@ -247,6 +247,17 @@
                 });
             }
 
+            //Checking User is Logged in or not
+            $.ajax({
+                url: 'assets/php/action.php',
+                method: 'post',
+                data: {action :  'checkUser'},
+                success: function(response){
+                    if(response === 'Bye!!'){
+                        Window.location = 'index.php';
+                    }
+                }
+            });
         });
         </script>
     </body>
