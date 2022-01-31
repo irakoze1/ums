@@ -73,7 +73,7 @@
                         }
                 });
 
-            }
+        }
     
         //Display user im Details
         $("body").on("click",".userDetailsIcon", function(e){

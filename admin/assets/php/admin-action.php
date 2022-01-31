@@ -155,5 +155,112 @@
         $admin->userAction($id, 1);
 
     }
+
+    //Handle Fetch All Notes Ajax Request
+    if (isset($_POST['action']) && $_POST['action'] == 'fetchAllNotes'){
+        $output = '';
+        $notes = $admin->fetchAllNotes();
+
+        if($notes){
+            $output .= '<table class="table table-striped table-bordered text-center">
+                        <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>User Name</th>
+                        <th>User Email</th>
+                        <th>Note Title</th>
+                        <th>Written On</th>
+                        <th>Updated On</th>
+                        <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>';
+                        foreach($notes as $row){
+                            $output .='<tr>
+                                        <td>'.$row['id'].'</td>
+                                        <td>'.$row['name'].'</td>
+                                        <td>'.$row['email'].'</td>
+                                        <td>'.$row['title'].'</td>
+                                        <td>'.$row['created_at'].'</td>
+                                        <td>'.$row['updated_at'].'</td>
+                                        <td>
+
+                                            <a href="#" id="'.$row['id'].'" title="Delete Note" class="text-danger deletedNoteIcon"><i class="fas fa-trash-alt fa-lg"></i></a>&nbsp;
+                                            
+                                        </td>
+                                        </tr>';
+                        }
+                        
+                        $output .='</tbody>            
+                                    </table>';
+                        echo $output;
+        }else{
+            echo '<h3 class="text-center text-secondary">:(Non Any Note Written yet!</h3>';
+        }
+    }
+
+    //Handle Delete Note Ajax Request
+    if (isset($_POST['note_id'])){
+        $id = $_POST['note_id'];
+
+        $admin->deleteNoteOfUser($id);
+
+    }
+
+    //Handle Fetch All Feedback of Users Ajax Request
+    if (isset($_POST['action']) && $_POST['action'] == 'fetchAllFeedback'){
+        $output = '';
+        $feedback = $admin->fetchFeedback();
+
+        if($feedback){
+            $output .= '<table class="table table-striped table-bordered text-center">
+                        <thead>
+                        <tr>
+                        <th>FID</th>
+                        <th>UID</th>
+                        <th>User Name</th>
+                        <th>User Email</th>
+                        <th>Subject</th>
+                        <th>Feedback</th>
+                        <th>Sent On</th>
+                        <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>';
+                        foreach($feedback as $row){
+                            $output .='<tr>
+                                        <td>'.$row['id'].'</td>
+                                        <td>'.$row['uid'].'</td>
+                                        <td>'.$row['name'].'</td>
+                                        <td>'.$row['email'].'</td>
+                                        <td>'.$row['subject'].'</td>
+                                        <td>'.$row['feedback'].'</td>
+                                        <td>'.$row['created_at'].'</td>
+                                        <td>
+
+                                            <a href="#" fid="'.$row['id'].'"   id="'.$row['uid'].'" title="Reply" class="text-primay replyFeedbackIcon" data-toggle="modal" data-target="#showReplyModal"><i class="fas fa-reply fa-lg"></i></a>&nbsp;
+                                            
+                                        </td>
+                                        </tr>';
+                        }
+                        
+                        $output .='</tbody>            
+                                    </table>';
+                        echo $output;
+        }else{
+            echo '<h3 class="text-center text-secondary">:(Non Any Feedback Written yet!</h3>';
+        }
+    }
+
+    //Handle Reply Feedback To USER Ajax Request
+    if(isset($_POST['message'])){
+        $uid = $_POST['uid'];
+        $message = $admin->test_input($_POST['message']);
+        $fid = $_POST['fid'];
+
+        $admin->replyFeedback($uid, $message);
+        $admin->feedbackReplied($fid);
+    }
+
     
 ?>

@@ -22,5 +22,61 @@
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.4/datatables.min.js"></script>
+         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $(document).ready(function(){
+                //Fetc All Notes Ajax Request
+                fetchAllNotes();
+                
+                function fetchAllNotes(){
+                        $.ajax({
+                            url:'assets/php/admin-action.php',
+                                method: 'post',
+                                data:{action: 'fetchAllNotes'},
+                                success:function(response){
+                                    $("#showAllNotes").html(response);
+                                    $("table").DataTable({
+                                        order: [0, 'desc']
+                                    });
+                                }
+                        });
+
+                }
+
+                //Delete Note Ajax Request
+                $("body").on("click", ".deletedNoteIcon", function(e){
+                    e.preventDefault();
+                    note_id = $(this).attr('id');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                        if (result.value) {
+                            $.ajax({
+                                url:'assets/php/admin-action.php',
+                                method: 'post',
+                                data:{note_id :note_id},
+                                success:function(response){
+                                    Swal.fire(
+                                    'Deleted!',
+                                    'Note deleted successfully!',
+                                    'success'
+                                    )
+                                    fetchAllNotes();
+                                }
+                            });
+                        }
+                        })
+                });
+            });
+        </script>
     </body>
 </html>

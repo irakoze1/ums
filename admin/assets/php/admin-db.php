@@ -95,7 +95,52 @@
             return true;
         }
 
+        //Fetch All Registeredd Users
+        public function fetchAllNotes(){
+            $sql = "SELECT notes.id, notes.title, notes.note, notes.created_at, notes.updated_at, users.name, users.email FROM notes INNER JOIN users ON notes.uid = users.id ";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            return $result;
+        }
+
+        //Delete An Note
+        public function deleteNoteOfUser($id){
+            $sql = "DELETE FROM notes WHERE id= :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id'=>$id]);
+
+            return true;
+        }
+
+        //Fetch All Feedback of Users
+        public function fetchFeedback(){
+            $sql = "SELECT feedback.id, feedback.subject, feedback.feedback, feedback.created_at, feedback.uid, users.name,users.email FROM feedback INNER JOIN users ON feedback.uid = users.id WHERE replied != 1 ORDER BY feedback.id DESC";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+
+        //Reply To USER
+        public function replyFeedback($uid, $message){
+            $sql = "INSERT INTO notification (uid, type, message) VALUES (:uid, 'user', :message)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['uid'=>$uid, 'message'=>$message]);
+            
+            return true;
+        }
+
+        //Set Feedback Replied
+        public function feedbackReplied($fid){
+            $sql = "UPDATE feedback SET replied = 1 WHERE id= :fid";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['fid'=>$fid]);
+
+            return true;
+        }
     }
 
 ?>
